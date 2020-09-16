@@ -1,4 +1,4 @@
-package algorithm.sort.linkedlist.queue;
+package algorithm.sort.queue;
 
 import com.sun.tools.javac.util.Assert;
 

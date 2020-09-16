@@ -1,41 +1,39 @@
-package algorithm.sort.linkedlist.queue;
+package algorithm.sort.queue;
 
 import com.sun.tools.javac.util.Assert;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
-public class ArrayQueue<T> {
+public class DynamicArrayQueue<T> {
     private T[] data;
-    private int n =0;
+    private int n = 0;
     private int head = 0;
     private int tail = 0;
 
-    public ArrayQueue(int capacity) {
-        data = (T[]) new Object[capacity];
+    private DynamicArrayQueue(int capacity) {
         n = capacity;
+        data = (T[]) new Object[n];
     }
 
     public boolean enqueue(T t) {
         if (tail == n) {
-            System.out.println("queue is full,can't enqueue!");
-            return false;
+            //tail == n and head ==0,the queue is full.
+            if (head == 0) {
+                return false;
+            }
+            //move element to array[0] ; O(n)
+            for (int i = head; i < tail; i++) {
+                data[i - head] = data[head];
+            }
         }
-        data[tail++] = t;
+        head = 0;
+        tail -= head;
         return true;
     }
 
     public T dequeue() {
         if (head == tail) {
-            System.out.println("queue is empty!");
             return null;
         }
-
-        return data[head++];
-    }
-
-    private boolean isEmpty(){
-        return head == tail;
+        return data[++head];
     }
 
     public void printAll() {
@@ -46,7 +44,7 @@ public class ArrayQueue<T> {
     }
 
     public static void main(String[] args) {
-        ArrayQueue aq = new ArrayQueue(5);
+        DynamicArrayQueue aq = new DynamicArrayQueue(5);
         Assert.check(aq.enqueue("1"));
         Assert.check(aq.enqueue("2"));
         Assert.check(aq.enqueue("3"));
@@ -69,4 +67,5 @@ public class ArrayQueue<T> {
 
         //aq.printAll();
     }
+
 }
