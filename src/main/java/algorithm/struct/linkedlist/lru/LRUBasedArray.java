@@ -1,4 +1,4 @@
-package algorithm.sort.linkedlist.lru;
+package algorithm.struct.linkedlist.lru;
 
 import java.util.HashMap;
 import java.util.Map;

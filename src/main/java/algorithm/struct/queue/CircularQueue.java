@@ -1,4 +1,4 @@
-package algorithm.sort.queue;
+package algorithm.struct.queue;
 
 import com.sun.tools.javac.util.Assert;
 

@@ -1,4 +1,4 @@
-package algorithm.sort.linkedlist;
+package algorithm.struct.linkedlist;
 
 import com.sun.tools.javac.util.Assert;
 

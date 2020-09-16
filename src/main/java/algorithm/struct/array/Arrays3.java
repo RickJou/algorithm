@@ -1,12 +1,12 @@
-package algorithm.sort.array;
+package algorithm.struct.array;
 
 import com.sun.tools.javac.util.Assert;
 
-public class Arrays2<T> {
+public class Arrays3<T> {
     private T[] data;
     private int size;
 
-    Arrays2(int capacity) {
+    Arrays3(int capacity) {
         this.data = (T[]) new Object[capacity];
         this.size = 0;
     }
@@ -24,21 +24,27 @@ public class Arrays2<T> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("arguments failed! index >= 0 and index < size.");
+        if (0 > index || index >= size) {
+            throw new IllegalArgumentException("arguments Failed! Require index >= 0 and index < size");
         }
     }
 
-    //add元素时校验
     private void checkIndexForAdd(int index) {
-        if (index < 0 || index > size) {
-            throw new IllegalArgumentException("arguments failed! index >= 0 and index <= size.");
+        if (0 > index || index > size) {
+            throw new IllegalArgumentException("arguments Failed! Require index >= 0 and index < size");
         }
     }
 
-    public T get(int index) {
-        checkIndex(index);
-        return data[index];
+    private void resize(int capacity) {
+        T[] newData = (T[]) new Object[capacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
+    }
+
+    public boolean container(T t) {
+        return find(t) != -1;
     }
 
     public int find(T t) {
@@ -50,16 +56,8 @@ public class Arrays2<T> {
         return -1;
     }
 
-    public boolean container(T t) {
-        return find(t) != -1;
-    }
-
-    private void resize(int capacity) {
-        T[] newData = (T[]) new Object[capacity];
-        for (int i = 0; i < size; i++) {
-            newData[i] = data[i];
-        }
-        data = newData;
+    public T get(int index) {
+        return data[index];
     }
 
     public void set(int index, T t) {
@@ -70,12 +68,13 @@ public class Arrays2<T> {
     public void add(int index, T t) {
         checkIndexForAdd(index);
 
+        //扩容
         if (size == data.length) {
             resize(2 * data.length);
         }
-        //后移
-        for (int i = size; i > index; i--) {
-            data[i] = data[i - 1];
+
+        for (int i = size - 1; i >= index; i--) {
+            data[i + 1] = data[i];
         }
         data[index] = t;
         size++;
@@ -88,7 +87,6 @@ public class Arrays2<T> {
     public void addLast(T t) {
         add(size, t);
     }
-
 
     public T remove(int index) {
         checkIndex(index);
@@ -139,7 +137,7 @@ public class Arrays2<T> {
 
     public static void main(String[] args) {
         //初始化测试
-        Arrays2<Integer> arr = new Arrays2<Integer>(2);
+        Arrays3<Integer> arr = new Arrays3<Integer>(2);
         Assert.check(arr.getCapacity() == 2);
         Assert.check(arr.count() == 0);
 
@@ -201,5 +199,6 @@ public class Arrays2<T> {
 
         System.out.println(arr.toString());
     }
+
 
 }

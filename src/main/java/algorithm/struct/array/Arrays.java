@@ -1,44 +1,53 @@
-package algorithm.sort.array;
+package algorithm.struct.array;
 
 import com.sun.tools.javac.util.Assert;
 
-public class Arrays4<T> {
-    private int size;
+public class Arrays<T> {
     private T[] data;
+    private int size;
 
-    public Arrays4(int capacity) {
-        data = (T[]) new Object[capacity];
-        size = 0;
+    Arrays(int capacity) {
+        this.data = (T[]) new Object[capacity];
+        this.size = 0;
     }
 
+    //获取容量
     public int getCapacity() {
         return data.length;
     }
 
+    //获取用量
     public int count() {
         return size;
     }
 
+    //数组是否为空
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    //检查入参index位置
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index Failed! Require index >=0 and index < size");
+            throw new IllegalArgumentException("arguments failed! index >= 0 and index < size.");
         }
     }
 
+    //add元素时校验
     private void checkIndexForAdd(int index) {
         if (index < 0 || index > size) {
-            throw new IllegalArgumentException("index Failed! Require index >=0  and index <= size");
+            throw new IllegalArgumentException("arguments failed! index >= 0 and index <= size.");
         }
     }
 
-    private void resize(int capacity) {
-        T[] newData = (T[]) new Object[capacity];
-        for (int i = 0; i < size; i++) {
-            newData[i] = data[i];
-        }
-        data = newData;
+    //获取对应位置的元素
+    public T get(int index) {
+        checkIndex(index);
+        return data[index];
     }
 
+
+    //获取对应元素下标,未找到返回-1
     public int find(T t) {
         for (int i = 0; i < size; i++) {
             if (data[i].equals(t)) {
@@ -48,27 +57,41 @@ public class Arrays4<T> {
         return -1;
     }
 
+    //查看数组是否包含元素
     public boolean container(T t) {
-        return find(t) != -1;
+        for (int i = 0; i < size; i++) {
+            if (data[i].equals(t)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public boolean isEmpty() {
-        return size == 0;
+    //扩容数组,时间复杂度O(n)
+    private void resize(int capacity) {
+        T[] newData = (T[]) new Object[capacity];
+
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        this.data = newData;
     }
 
-    public T get(int index) {
+
+    //修改指定位置的元素
+    public void set(int index, T t) {
         checkIndex(index);
-        return data[index];
+        data[index] = t;
     }
 
+
+    //在指定位置插入元素,时间复杂度O(n+m)
     public void add(int index, T t) {
         checkIndexForAdd(index);
-
-        //扩容
         if (size == data.length) {
             resize(2 * data.length);
         }
-        //后移 O(n)
+        //后移元素
         for (int i = size - 1; i >= index; i--) {
             data[i + 1] = data[i];
         }
@@ -76,19 +99,17 @@ public class Arrays4<T> {
         size++;
     }
 
+    //在头部插入元素
     public void addFirst(T t) {
         add(0, t);
     }
 
+    //在尾部插入元素
     public void addLast(T t) {
         add(size, t);
     }
 
-    public void set(int index, T t) {
-        checkIndex(index);
-        data[index] = t;
-    }
-
+    //删除指定位置的元素
     public T remove(int index) {
         checkIndex(index);
         T res = data[index];
@@ -106,14 +127,17 @@ public class Arrays4<T> {
         return res;
     }
 
-    public T removeLast() {
-        return remove(size -1);
-    }
-
+    //删除第一个元素
     public T removeFirst() {
         return remove(0);
     }
 
+    //删除末尾元素
+    public T removeLast() {
+        return remove(size - 1);
+    }
+
+    //删除指定元素
     public void removeElement(T t) {
         int index = find(t);
         if (index != -1) {
@@ -121,9 +145,25 @@ public class Arrays4<T> {
         }
     }
 
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[");
+        if (!isEmpty()) {
+            sb.append(get(0));
+            for (int i = 1; i < size; i++) {
+                sb.append(", ");
+                sb.append(get(i));
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         //初始化测试
-        Arrays4<Integer> arr = new Arrays4<Integer>(2);
+        Arrays<Integer> arr = new Arrays<Integer>(2);
         Assert.check(arr.getCapacity() == 2);
         Assert.check(arr.count() == 0);
 
@@ -187,6 +227,5 @@ public class Arrays4<T> {
 
 
     }
-
 
 }

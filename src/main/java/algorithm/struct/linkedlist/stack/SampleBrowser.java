@@ -1,4 +1,4 @@
-package algorithm.sort.linkedlist.stack;
+package algorithm.struct.linkedlist.stack;
 
 public class SampleBrowser {
 
