@@ -1,5 +1,7 @@
 package algorithm.sort.queue;
 
+import com.sun.tools.javac.util.Assert;
+
 public class QueueBasedOnLinkedList<T> {
     private Node<T> head;
     private Node<T> tail;
@@ -64,10 +66,19 @@ public class QueueBasedOnLinkedList<T> {
 
     public static void main(String[] args) {
         QueueBasedOnLinkedList queue = new QueueBasedOnLinkedList(5);
-        queue.enqueue("1");
-        queue.enqueue("2");
-        queue.enqueue("3");
-        queue.enqueue("4");
-        queue.enqueue("5");
+        Assert.check(queue.enqueue("1"));
+        Assert.check(queue.enqueue("2"));
+        Assert.check(queue.enqueue("3"));
+        Assert.check(queue.enqueue("4"));
+        Assert.check(queue.enqueue("5"));
+        Assert.check(!queue.enqueue("6"));
+
+        Assert.check("1".equals(queue.dequeue()));
+        Assert.check("2".equals(queue.dequeue()));
+        Assert.check("3".equals(queue.dequeue()));
+        Assert.check("4".equals(queue.dequeue()));
+        Assert.check("5".equals(queue.dequeue()));
+        Assert.check(null == queue.dequeue());
+
     }
 }
