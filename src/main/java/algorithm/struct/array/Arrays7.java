@@ -2,111 +2,113 @@ package algorithm.struct.array;
 
 import com.sun.tools.javac.util.Assert;
 
-public class Arrays6<T> {
-
+public class Arrays7<T> {
     private T[] data;
     private int size;
 
-    public Arrays6(int capacity) {
-        this.size = 0;
+    public Arrays7(int capacity) {
         this.data = (T[]) new Object[capacity];
+        this.size = 0;
     }
 
-    public Arrays6() {
+    public Arrays7() {
         this(8);
     }
 
+    //getCapacity
     public int getCapacity() {
         return this.data.length;
     }
 
-
+    //count
     public int count() {
         return this.size;
     }
 
-    public void set(int i, T t) {
-        checkIndexForQuery(i);
-        this.data[i] = t;
+    //get
+    public T get(int index) {
+        checkIndexByQuery(index);
+        return data[index];
     }
 
-    public T get(int i) {
-        checkIndexForQuery(i);
-        return this.data[i];
+    //set
+    public void set(int index, T t) {
+        checkIndexByQuery(index);
+        data[index] = t;
     }
 
-    public boolean container(T t) {
-        for (int i = 0; i < this.size; i++) {
-            if (this.data[i].equals(t)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    //find
     public int find(T t) {
-        for (int i = 0; i < this.size; i++) {
-            if (this.data[i].equals(t)) {
+        for (int i = 0; i < size; i++) {
+            if (data[i].equals(t)) {
                 return i;
             }
         }
         return -1;
     }
 
+    public boolean container(T t) {
+        return find(t) == -1 ? false : true;
+    }
+
+    //checkIndexByQuery
+    private void checkIndexByQuery(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("index must >= 0 and < size");
+        }
+    }
+
+    //checkIndexByAdd
+    private void checkIndexByAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException("index must >= 0 and <= size");
+        }
+    }
+
+    //resize
+    private void resize(int newCapacity) {
+        T[] newData = (T[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
+    }
+
     //add
     public void add(int index, T t) {
-        checkIndexForAdd(index);
-        if (getCapacity() == this.size) {
-            resize(getCapacity() * 2);
+        checkIndexByAdd(index);
+        if (data.length == size) {
+            resize(data.length * 2);
         }
 
         for (int i = size - 1; i >= index; i--) {
             data[i + 1] = data[i];
         }
-        data[index] = t;
         size++;
+        data[index] = t;
     }
 
     //remove
     public T remove(int index) {
-        checkIndexForQuery(index);
-        T obj = data[index];
+        checkIndexByQuery(index);
+        T tmp = data[index];
         for (int i = index + 1; i < size; i++) {
             data[i - 1] = data[i];
         }
         size--;
         data[size] = null;
-        if (this.size == data.length / 4 && data.length / 2 != 0) {
+
+        if (data.length / 4 == size && data.length / 2 != 0) {
             resize(data.length / 2);
         }
-        return obj;
+
+        return tmp;
     }
 
-    //扩缩容 O(n)
-    private void resize(int newCapital) {
-        T[] newArr = (T[]) new Object[newCapital];
-        for (int i = 0; i < this.size; i++) {
-            newArr[i] = this.data[i];
-        }
-        this.data = newArr;
-    }
-
-
-    private void checkIndexForQuery(int i) {
-        if (i < 0 || i >= size) {
-            throw new IllegalArgumentException("index must >=0 and < size");
-        }
-    }
-
-    private void checkIndexForAdd(int i) {
-        if (i < 0 || i > size) {
-            throw new IllegalArgumentException("index must >=0 and <= size");
-        }
-    }
 
     public static void main(String[] args) {
         //初始化测试
-        Arrays6<Integer> arr = new Arrays6<Integer>(2);
+        Arrays7<Integer> arr = new Arrays7<Integer>(2);
         Assert.check(arr.getCapacity() == 2);
         Assert.check(arr.count() == 0);
 
