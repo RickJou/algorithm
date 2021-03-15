@@ -224,8 +224,6 @@ public class Arrays<T> {
         }
 
         System.out.println(arr.toString());
-
-
     }
 
 }

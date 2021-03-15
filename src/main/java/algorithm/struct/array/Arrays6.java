@@ -2,118 +2,111 @@ package algorithm.struct.array;
 
 import com.sun.tools.javac.util.Assert;
 
-public class Arrays5<T> {
+public class Arrays6<T> {
+
     private T[] data;
     private int size;
 
-    public Arrays5(int capacity) {
-        this.data = (T[]) new Object[capacity];
+    public Arrays6(int capital) {
         this.size = 0;
+        this.data = (T[]) new Object[capital];
     }
 
-    public Arrays5() {
+    public Arrays6() {
         this(8);
     }
 
-    //获取当前容量
     public int getCapacity() {
-        return data.length;
+        return this.data.length;
     }
 
-    //获得当前数组大小
+
     public int count() {
-        return size;
+        return this.size;
     }
 
-    //通过下标设置元素
     public void set(int i, T t) {
         checkIndexForQuery(i);
-        data[i] = t;
+        this.data[i] = t;
     }
 
-    //获取指定下标的元素
     public T get(int i) {
         checkIndexForQuery(i);
-        return data[i];
+        return this.data[i];
     }
 
-    //是否包含元素
     public boolean container(T t) {
-        for (int i = 0; i < size; i++) {
-            if (data[i].equals(t)) {
+        for (int i = 0; i < this.size; i++) {
+            if (this.data[i].equals(t)) {
                 return true;
             }
         }
         return false;
     }
 
-    //查找元素下标
     public int find(T t) {
-        for (int i = 0; i < size; i++) {
-            if (data[i].equals(t)) {
+        for (int i = 0; i < this.size; i++) {
+            if (this.data[i].equals(t)) {
                 return i;
             }
         }
         return -1;
     }
 
-
-    //插入元素
+    //add
     public void add(int index, T t) {
         checkIndexForAdd(index);
-        if (size == data.length) {
+        if (getCapacity() == this.size) {
             resize(getCapacity() * 2);
         }
 
         for (int i = size - 1; i >= index; i--) {
             data[i + 1] = data[i];
         }
-
         data[index] = t;
         size++;
     }
 
+    //remove
     public T remove(int index) {
         checkIndexForQuery(index);
-        T tmp = data[index];
+        T obj = data[index];
         for (int i = index + 1; i < size; i++) {
-            data[i-1] = data[i];
+            data[i - 1] = data[i];
         }
         size--;
         data[size] = null;
-
-        if (size == data.length / 4 && data.length / 2 != 0) {
+        if (this.size == data.length / 4 && data.length / 2 != 0) {
             resize(data.length / 2);
         }
-        return tmp;
+        return obj;
     }
 
-
-    //扩容 or 缩容
-    private void resize(int newCapacity) {
-        T[] newArr = (T[]) new Object[newCapacity];
-        for (int i = 0; i < size; i++) {
-            newArr[i] = data[i];
+    //扩缩容 O(n)
+    private void resize(int newCapital) {
+        T[] newArr = (T[]) new Object[newCapital];
+        for (int i = 0; i < this.size; i++) {
+            newArr[i] = this.data[i];
         }
-        data = newArr;
+        this.data = newArr;
     }
+
 
     private void checkIndexForQuery(int i) {
         if (i < 0 || i >= size) {
-            throw new IllegalArgumentException("index must >= 0 and < size");
+            throw new IllegalArgumentException("index must >=0 and < size");
         }
     }
 
     private void checkIndexForAdd(int i) {
         if (i < 0 || i > size) {
-            throw new IllegalArgumentException("Failed remove element, index must >=0 and <= size");
+            throw new IllegalArgumentException("index must >=0 and <= size");
         }
     }
 
-
     public static void main(String[] args) {
         //初始化测试
-        Arrays5<Integer> arr = new Arrays5<Integer>(2);
+        Arrays6<Integer> arr = new Arrays6<Integer>(2);
         Assert.check(arr.getCapacity() == 2);
         Assert.check(arr.count() == 0);
 
@@ -170,7 +163,7 @@ public class Arrays5<T> {
         }
 
 
-
         System.out.println(arr.toString());
     }
+
 }
